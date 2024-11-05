@@ -1,0 +1,80 @@
+CREATE DATABASE academico;
+USE academico;
+
+CREATE TABLE endereco (
+    id_endereco INTEGER AUTO_INCREMENT PRIMARY KEY,
+    logradouro VARCHAR(100),
+    bairro VARCHAR(100),
+    numero VARCHAR(100),
+    cep VARCHAR(8)
+);
+
+CREATE TABLE aluno (
+    id_aluno INTEGER AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    id_endereco INTEGER,
+    FOREIGN KEY (id_endereco) REFERENCES endereco(id_endereco)
+);
+
+CREATE TABLE professor (
+    id_professor INTEGER AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    id_endereco INTEGER,
+    FOREIGN KEY (id_endereco) REFERENCES endereco(id_endereco)
+);
+
+DROP TABLE IF EXISTS curso;
+
+CREATE TABLE curso (
+    id_curso INTEGER AUTO_INCREMENT PRIMARY KEY,
+    nome_curso VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    carga_horaria INTEGER
+);
+
+CREATE TABLE matricula (
+    id_matricula INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id_aluno INTEGER,
+    id_curso INTEGER,
+    data_matricula DATE,
+    FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno),
+    FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
+);
+
+CREATE TABLE nota (
+    id_nota INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id_aluno INTEGER,
+    id_curso INTEGER,
+    nota DECIMAL(5,2),
+    FOREIGN KEY (id_aluno) REFERENCES aluno(id_aluno),
+    FOREIGN KEY (id_curso) REFERENCES curso(id_curso)
+);
+
+INSERT INTO endereco (logradouro, bairro, numero, cep) 
+VALUES
+('Rua A', 'Centro', '10', '12345678'),
+('Rua B', 'Bela Vista', '20', '12345679');
+
+INSERT INTO aluno (nome, email, telefone, id_endereco) 
+VALUES
+('Maria Silva', 'maria.silva@gmail.com', '123456789', 1);
+
+INSERT INTO professor (nome, email, telefone, id_endereco) 
+VALUES
+('João Souza', 'joao.souza@gmail.com', '987654321', 2);
+
+INSERT INTO curso (nome_curso, descricao, carga_horaria) 
+VALUES
+('Matemática', 'Curso de Matemática', 180);
+
+INSERT INTO matricula (id_aluno, id_curso, data_matricula) 
+VALUES
+(1, 1, '2024-01-10');
+
+INSERT INTO nota (id_aluno, id_curso, nota) 
+VALUES
+(1, 1, 95.0);
